@@ -14,6 +14,9 @@ cloth_id_outpath_samples = os.path.join(data_dir, "outputs/easyphoto-cloth-id-in
 scene_id_outpath_samples = os.path.join(data_dir, "outputs/easyphoto-scene-id-infos")
 cache_log_file_path = os.path.join(data_dir, "outputs/easyphoto-tmp/train_kohya_log.txt")
 
+lora_dir = os.path.join(models_path, "Lora")
+env_path = os.path.join(data_dir, "extensions/sd-webui-EasyPhoto/.env")
+
 # gallery_dir
 tryon_preview_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)).replace("scripts", "images"), "tryon")
 tryon_gallery_dir = os.path.join(cloth_id_outpath_samples, "gallery")

@@ -99,6 +99,20 @@ if not launch.is_installed("segment_anything"):
     except Exception:
         print("Can't install segment-anything. Please follow the readme to install manually")
 
+# Install Boto3 for file upload to cloudflare r2
+if not launch.is_installed("boto3"):
+    try:
+        launch.run_pip("install boto3",  "requirements for boto3")
+    except Exception:
+        print("Can't Install Boto3")
+        
+if not launch.is_installed("python-dotenv"):
+    try:
+        launch.run_pip("install python-dotenv",  "requirements for python-dotenv")
+    except Exception:
+        print("Can't Install python-dotenv")
+
+
 if not is_installed("diffusers>=0.18.2"):
     print("Installing requirements for easyphoto-webui")
     try:

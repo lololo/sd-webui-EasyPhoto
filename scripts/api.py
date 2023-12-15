@@ -11,6 +11,13 @@ from modules.api import api
 from scripts.easyphoto_infer import easyphoto_infer_forward
 from scripts.easyphoto_train import easyphoto_train_forward
 
+trian_status = {}
+
+def easyphoto_train_status_api(_: gr.Blocks, app: FastAPI):
+    @app.post("/easyphoto/easyphoto_train_status")
+    def _easyphoto_train_status_api():
+        return trian_status
+
 
 def easyphoto_train_forward_api(_: gr.Blocks, app: FastAPI):
     @app.post("/easyphoto/easyphoto_train_forward")
@@ -53,6 +60,8 @@ def easyphoto_train_forward_api(_: gr.Blocks, app: FastAPI):
             _instance_images.append({"name": save_path})
         instance_images = _instance_images
 
+        global trian_status
+        trian_status = {"user_id": user_id, "status": "triain"}
         try:
             message = easyphoto_train_forward(
                 sd_model_checkpoint,
@@ -82,6 +91,8 @@ def easyphoto_train_forward_api(_: gr.Blocks, app: FastAPI):
         except Exception as e:
             torch.cuda.empty_cache()
             message = f"Train error, error info:{str(e)}"
+
+        trian_status = {}
 
         return {"message": message}
 
@@ -250,6 +261,7 @@ def easyphoto_infer_forward_api(_: gr.Blocks, app: FastAPI):
 try:
     import modules.script_callbacks as script_callbacks
 
+    script_callbacks.on_app_started(easyphoto_train_status_api)
     script_callbacks.on_app_started(easyphoto_train_forward_api)
     script_callbacks.on_app_started(easyphoto_infer_forward_api)
 except Exception as e:
